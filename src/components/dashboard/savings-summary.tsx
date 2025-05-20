@@ -42,7 +42,7 @@ export function SavingsSummary() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium">Total Balance</span>
-              <span className="text-xl font-bold">${savingsData.total_amount.toFixed(2)}</span>
+              <span className="text-xl font-bold">₹{savingsData.total_amount.toFixed(2)}</span>
             </div>
             <ProgressBar className="h-2" value={100} />
           </div>
@@ -51,7 +51,7 @@ export function SavingsSummary() {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-sm">Minimum Balance</span>
-                <span className="text-sm font-medium">${savingsData.minimum_balance.toFixed(2)}</span>
+                <span className="text-sm font-medium">₹{savingsData.minimum_balance.toFixed(2)}</span>
               </div>
               <ProgressBar 
                 className="h-2" 
@@ -63,7 +63,7 @@ export function SavingsSummary() {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-sm">Savings ({(savingsData.saving_percent * 100)}%)</span>
-                <span className="text-sm font-medium">${savingAmount.toFixed(2)}</span>
+                <span className="text-sm font-medium">₹{savingAmount.toFixed(2)}</span>
               </div>
               <ProgressBar 
                 className="h-2" 
@@ -75,7 +75,7 @@ export function SavingsSummary() {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-sm">Available to Spend</span>
-                <span className="text-sm font-medium">${availableAmount.toFixed(2)}</span>
+                <span className="text-sm font-medium">₹{availableAmount.toFixed(2)}</span>
               </div>
               <ProgressBar 
                 className="h-2" 
@@ -90,7 +90,7 @@ export function SavingsSummary() {
               <span className="font-medium">Formula:</span> Available = Total - (Minimum + (Total × Saving%))
             </div>
             <div className="text-xs text-muted-foreground">
-              ${availableAmount.toFixed(2)} = ${savingsData.total_amount.toFixed(2)} - (${savingsData.minimum_balance.toFixed(2)} + (${savingsData.total_amount.toFixed(2)} × {savingsData.saving_percent}))
+              ₹{availableAmount.toFixed(2)} = ₹{savingsData.total_amount.toFixed(2)} - (₹{savingsData.minimum_balance.toFixed(2)} + (₹{savingsData.total_amount.toFixed(2)} × {savingsData.saving_percent}))
             </div>
           </div>
         </CardContent>

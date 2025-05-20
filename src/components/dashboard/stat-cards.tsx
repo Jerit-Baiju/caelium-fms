@@ -47,7 +47,7 @@ export function BalanceCard() {
   return (
     <StatCard
       title="Account Balance"
-      value="$12,580.00"
+      value="₹12,580.00"
       description="Available to spend"
       trend={+5.2}
       trendLabel="from last month"
@@ -61,7 +61,7 @@ export function SavingsCard() {
   return (
     <StatCard
       title="Savings"
-      value="$4,209.50"
+      value="₹4,209.50"
       description="Total saved"
       trend={+12.5}
       trendLabel="from target"
@@ -75,7 +75,7 @@ export function SpendingCard() {
   return (
     <StatCard
       title="Monthly Spend"
-      value="$2,850.75"
+      value="₹2,850.75"
       description="This month"
       trend={-3.4}
       trendLabel="vs. previous month"

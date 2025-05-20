@@ -51,7 +51,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 							style={{ backgroundColor: entry.color }}
 						/>
 						<span className="font-medium">{entry.name}: </span>
-						<span>${entry.value.toLocaleString()}</span>
+						<span>₹{entry.value.toLocaleString()}</span>
 					</div>
 				))}
 			</div>
@@ -88,7 +88,7 @@ export function TransactionChart() {
 									dy={0}
 								/>
 								<YAxis
-									tickFormatter={(value) => `$${value}`}
+									tickFormatter={(value) => `₹${value}`}
 									tickLine={false}
 									axisLine={false}
 									tick={{ fontSize: '12px' }}

@@ -114,7 +114,7 @@ export function RecentTransactions() {
                     <span className={`text-sm font-semibold ${
                       transaction.type === "income" ? "text-emerald-500" : "text-red-500"
                     }`}>
-                      {transaction.type === "income" ? "+" : "-"}${transaction.amount}
+                      {transaction.type === "income" ? "+" : "-"}₹{transaction.amount}
                     </span>
                   </div>
                 </motion.div>
