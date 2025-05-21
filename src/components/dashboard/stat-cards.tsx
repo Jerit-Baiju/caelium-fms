@@ -47,7 +47,7 @@ export function BalanceCard() {
   return (
     <StatCard
       title="Account Balance"
-      value="₹12,580.00"
+      value="₹12,58,000.00"
       description="Available to spend"
       trend={+5.2}
       trendLabel="from last month"

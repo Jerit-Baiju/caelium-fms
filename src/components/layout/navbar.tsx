@@ -1,5 +1,6 @@
 'use client';
 
+import TransactionDialog from "@/components/transactions/TransactionDialog";
 import { Button } from "@/components/ui/button";
 import { useNavbar } from "@/contexts/NavContext";
 import { motion } from "framer-motion";
@@ -9,6 +10,7 @@ import { FiBell, FiMenu, FiSearch } from "react-icons/fi";
 
 export default function NavBar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showTransactionDialog, setShowTransactionDialog] = useState(false);
   const { navLinks, ctaButton, dropDown } = useNavbar();
   
   const toggleMobileMenu = () => {
@@ -115,12 +117,12 @@ export default function NavBar() {
           {/* CTA Button */}
           {ctaButton && (
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="hidden md:block">
-              <Link
-                href={ctaButton.url}
-                className="bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium"
+              <Button
+                onClick={() => setShowTransactionDialog(true)}
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium h-auto"
               >
                 {ctaButton.name}
-              </Link>
+              </Button>
             </motion.div>
           )}
         </div>
@@ -150,16 +152,25 @@ export default function NavBar() {
           ))}
           {ctaButton && (
             <li className="px-6 py-3">
-              <Link
-                href={ctaButton.url}
-                className="block w-full bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium text-center"
+              <Button
+                onClick={() => {
+                  setShowTransactionDialog(true);
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium text-center h-auto"
               >
                 {ctaButton.name}
-              </Link>
+              </Button>
             </li>
           )}
         </ul>
       </div>
+
+      {/* Transaction Dialog */}
+      <TransactionDialog 
+        open={showTransactionDialog} 
+        onOpenChange={setShowTransactionDialog} 
+      />
     </motion.nav>
   );
 }
