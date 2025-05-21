@@ -10,14 +10,6 @@ export default function Home() {
     <Wrapper>
       <div className="h-[calc(100vh-4rem)] p-3 md:p-4 overflow-auto">
         <div className="max-w-7xl mx-auto space-y-3 md:space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl md:text-2xl font-bold tracking-tight">Dashboard</h1>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                Welcome back! Your financial overview for today.
-              </p>
-            </div>
-          </div>
           
           {/* Stats Cards */}
           <div className="grid gap-3 md:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
