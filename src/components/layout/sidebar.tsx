@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 import { useContext } from 'react';
 
 // Determine if the options array has sections
-const hasSections = (options: any[]): options is SidebarSection[] => {
+const hasSections = (options: (SidebarOption | SidebarSection)[]): options is SidebarSection[] => {
   return options.length > 0 && 'section' in options[0] && 'items' in options[0];
 };
 

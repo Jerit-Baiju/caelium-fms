@@ -61,13 +61,13 @@ export const useNavbar = () => {
 };
 
 // Default navigation configurations
-let defaultNavLinks: NavLink[] = [
+const defaultNavLinks: NavLink[] = [
   { name: 'Dashboard', url: '/' },
   { name: 'Analytics', url: '/analytics' },
   { name: 'Transactions', url: '/transactions' },
 ];
 
-let defaultCtaButton: NavLink = { name: 'Add Transaction', url: '/transactions/add' };
+const defaultCtaButton: NavLink = { name: 'Add Transaction', url: '/transactions/add' };
 
 // Default sidebar options with sections
 export const defaultSidebarOptions: SidebarSection[] = [

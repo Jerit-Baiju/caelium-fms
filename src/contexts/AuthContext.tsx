@@ -6,46 +6,44 @@ import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
 import { ReactNode, createContext, useEffect, useRef, useState } from 'react';
 
-interface ErrorObject {
-  [key: string]: string;
+// Define a type for JWT token data
+interface TokenData {
+  exp: number;
+  user_id: string;
+  [key: string]: unknown;
 }
 
 interface AuthContextProps {
-  tokenData?: any;
-  authTokens: any;
-  error: ErrorObject;
+  tokenData?: TokenData | null
+  authTokens: { access: string; refresh: string } | null;
   loginUser: (e: { access: string; refresh: string }) => Promise<void>;
   logoutUser: () => void;
-  setTokenData: (e: any) => void;
-  setAuthTokens: (e: any) => void;
-  user: any;
-  refreshToken: () => Promise<any>; // <-- Expose refreshToken
+  setTokenData: (e: TokenData | null) => void;
+  setAuthTokens: (e: { access: string; refresh: string } | null) => void;
+  user: User | null;
 }
 
 const AuthContext = createContext<AuthContextProps>({
-  tokenData: {},
-  authTokens: {},
-  error: {},
+  tokenData: null,
+  authTokens: null,
   loginUser: async () => {},
   logoutUser: () => {},
   setTokenData: () => {},
   setAuthTokens: () => {},
-  user: {},
-  refreshToken: async () => null, // <-- Provide a default implementation
+  user: null,
 });
 
 export default AuthContext;
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  let [loading, setLoading] = useState(true);
-  let [error, setError] = useState({});
-  let [user, setUser] = useState<User | null>(null);
-  let [authTokens, setAuthTokens] = useState(() =>
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [authTokens, setAuthTokens] = useState(() =>
     typeof window !== 'undefined' && localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens') || '{}') : null
   );
 
-  let [tokenData, setTokenData] = useState(() =>
-    typeof window !== 'undefined' && localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens') || '{}') : null
+  const [tokenData, setTokenData] = useState<TokenData | null>(() =>
+    typeof window !== 'undefined' && localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens') || '{}') as TokenData : null
   );
 
   // Reference to track refresh timers
@@ -64,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       };
       localStorage.setItem('authTokens', JSON.stringify(newTokens));
       setAuthTokens(newTokens);
-      setTokenData(jwtDecode(response.data.access));
+      setTokenData(jwtDecode(response.data.access) as TokenData);
       scheduleTokenRefresh(response.data.access);
       return newTokens;
     } catch (error) {
@@ -90,6 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       refreshTimerRef.current = setTimeout(refreshToken, timeUntilRefresh);
     } catch (error) {
+      console.error('Error scheduling token refresh:', error);
       logoutUser();
     }
   };
@@ -97,7 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (loading || !authTokens) return;
     try {
-      const decodedToken: any = tokenData;
+      const decodedToken = tokenData;
       const isExpired = decodedToken && decodedToken.exp && decodedToken.exp * 1000 < Date.now();
       if (isExpired) {
         refreshToken();
@@ -105,6 +104,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       scheduleTokenRefresh(authTokens.access);
     } catch (err) {
+      console.error('Error decoding token:', err);
       logoutUser();
     }
     return () => {
@@ -156,14 +156,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [authTokens]);
 
-  let loginUser = async (data: { access: string; refresh: string }) => {
+  const loginUser = async (data: { access: string; refresh: string }) => {
     localStorage.setItem('authTokens', JSON.stringify(data));
     setAuthTokens(data);
-    setTokenData(jwtDecode(data?.access));
+    setTokenData(jwtDecode(data?.access) as TokenData);
     scheduleTokenRefresh(data.access);
   };
 
-  let logoutUser = () => {
+  const logoutUser = () => {
     if (refreshTimerRef.current) {
       clearTimeout(refreshTimerRef.current);
     }
@@ -177,7 +177,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (authTokens?.access) {
       try {
-        setTokenData(jwtDecode(authTokens.access));
+        setTokenData(jwtDecode(authTokens.access) as TokenData);
       } catch (err) {
         console.error('Invalid token format:', err);
         logoutUser();
@@ -186,16 +186,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(false);
   }, [authTokens]);
 
-  let contextData: AuthContextProps = {
+  const contextData: AuthContextProps = {
     tokenData,
     authTokens,
-    error,
     loginUser,
     logoutUser,
     setTokenData,
     setAuthTokens,
     user,
-    refreshToken,
   };
 
   return <AuthContext.Provider value={contextData}>{loading ? <Loader fullScreen /> : children}</AuthContext.Provider>;

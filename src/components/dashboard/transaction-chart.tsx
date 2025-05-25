@@ -4,7 +4,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { motion } from "framer-motion";
-import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
+import { Line, LineChart, Tooltip, TooltipProps, XAxis, YAxis } from "recharts";
+import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 
 // Sample data - this would come from your API in production
 const transactionData = [
@@ -35,25 +36,40 @@ const chartConfig: ChartConfig = {
 	},
 };
 
+// Define a type for the tooltip entry
+interface ChartTooltipEntry {
+  name: string;
+  value: number;
+  color: string;
+}
+
 // Custom tooltip
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ 
+	active, 
+	payload, 
+	label 
+}: TooltipProps<ValueType, NameType>) => {
 	if (active && payload && payload.length) {
 		return (
 			<div className="rounded-lg border bg-background p-2 shadow-sm">
 				<div className="text-xs text-muted-foreground">{label}</div>
-				{payload.map((entry: any, index: number) => (
-					<div
-						key={`item-${index}`}
-						className="flex items-center justify-between gap-2 text-sm"
-					>
-						<span
-							className="h-2 w-2 rounded-full"
-							style={{ backgroundColor: entry.color }}
-						/>
-						<span className="font-medium">{entry.name}: </span>
-						<span>₹{entry.value.toLocaleString()}</span>
-					</div>
-				))}
+				{payload.map((entry, index: number) => {
+					// Cast the entry to our interface that has the expected properties
+					const typedEntry = entry as unknown as ChartTooltipEntry;
+					return (
+						<div
+							key={`item-${index}`}
+							className="flex items-center justify-between gap-2 text-sm"
+						>
+							<span
+								className="h-2 w-2 rounded-full"
+								style={{ backgroundColor: typedEntry.color }}
+							/>
+							<span className="font-medium">{typedEntry.name}: </span>
+							<span>₹{typedEntry.value.toLocaleString()}</span>
+						</div>
+					);
+				})}
 			</div>
 		);
 	}

@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { IconType } from "react-icons";
 import { FiArrowDown, FiArrowUp, FiCoffee, FiHome, FiShoppingBag, FiSmartphone, FiZap } from "react-icons/fi";
 
 interface Transaction {
@@ -14,7 +15,7 @@ interface Transaction {
   type: "income" | "expense";
 }
 
-const transactionIcons: Record<string, any> = {
+const transactionIcons: Record<string, IconType> = {
   Shopping: FiShoppingBag,
   Groceries: FiShoppingBag,
   Utilities: FiZap,
