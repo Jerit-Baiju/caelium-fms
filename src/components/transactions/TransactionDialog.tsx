@@ -50,12 +50,7 @@ const buttonVariants = {
   tap: { scale: 0.95, transition: { duration: 0.1 } }
 };
 
-// Tab change animation variants
-const tabContentVariants = {
-  enter: { opacity: 0, x: 20 },
-  center: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -20 }
-};
+// Tab change animation variants removed
 
 export default function TransactionDialog({ open, onOpenChange }: TransactionDialogProps) {
   const [transactionType, setTransactionType] = useState<string>('expense');
@@ -174,15 +169,7 @@ export default function TransactionDialog({ open, onOpenChange }: TransactionDia
                   </TabsList>
                 </motion.div>
 
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={transactionType}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    variants={tabContentVariants}
-                    transition={{ duration: 0.3 }}
-                  >
+                <div>
                     {/* Common fields for all transaction types */}
                     <motion.div
                       className='space-y-4 py-2'
@@ -252,8 +239,7 @@ export default function TransactionDialog({ open, onOpenChange }: TransactionDia
                         />
                       </motion.div>
                     </motion.div>
-                  </motion.div>
-                </AnimatePresence>
+                  </div>
               </Tabs>
 
               <DialogFooter className="mt-4">
